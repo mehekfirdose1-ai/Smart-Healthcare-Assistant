@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Hospitals | SmartHealth</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef5fa;
+    color: #24364b;
+}
+
+header {
+    background: #087dbb;
+    color: white;
+    padding: 22px 7%;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #075985;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 30px;
+}
+
+.hospital-card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px #00000012;
+    border-left: 5px solid #0891b2;
+}
+
+.hospital-card h2 {
+    color: #087dbb;
+}
+
+.info {
+    line-height: 1.9;
+}
+
+.status {
+    color: #07835c;
+    font-weight: bold;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 20px;
+    background: #087dbb;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 7px;
+    text-decoration: none;
+}
+
+.empty {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #64748b;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2>💙 SmartHealth | Find Hospitals</h2>
+</header>
+
+<div class="container">
+
+<h1>Find Hospitals</h1>
+<p class="subtitle">
+Explore verified and approved hospitals.
+</p>
+
+{% if hospitals %}
+
+    {% for hospital in hospitals %}
+
+    <div class="hospital-card">
+
+        <h2>🏥 {{ hospital.hospital_name }}</h2>
+
+        <div class="info">
+
+            <p><b>Email:</b> {{ hospital.email }}</p>
+
+            <p><b>Phone:</b> {{ hospital.phone }}</p>
+
+            <p><b>Address:</b> {{ hospital.address }}</p>
+
+            <p><b>City:</b> {{ hospital.city }}</p>
+
+            <p><b>State:</b> {{ hospital.state }}</p>
+
+            <p class="status">
+                ✓ Approved Hospital
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="empty">
+        <h2>No Approved Hospitals</h2>
+        <p>There are currently no approved hospitals registered.</p>
+    </div>
+
+{% endif %}
+
+<a href="{{ url_for('home') }}" class="back">
+    ← Back to Home
+</a>
+
+</div>
+
+<footer>
+    © 2026 SmartHealth Assistance | Healthcare for Everyone
+</footer>
+
+</body>
+</html>

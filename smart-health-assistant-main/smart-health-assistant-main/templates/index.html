@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Healthcare Assistance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+    <a href="/" class="brand">💙 Smart<span>Health</span></a>
+
+    <!-- Hamburger Button -->
+<button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+    ☰
+</button>
+
+<!-- Background Overlay -->
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+
+<!-- Sidebar -->
+<div id="sideMenu" class="side-menu">
+
+    <div class="menu-header">
+        <h2>Smart Health</h2>
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+    </div>
+
+    <a href="/">🏠 Home</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/health">💬 Health Chat</a>
+    <a href="/find-care">🔍 Find Care</a>
+    <a href="/doctors">🩺 Doctors</a>
+    <a href="/hospitals">🏥 Hospitals</a>
+    <a href="/reviews">⭐ Reviews</a>
+
+    <div class="menu-bottom">
+        <a href="/logout">🚪 Logout</a>
+    </div>
+
+</div>
+
+    <div class="nav-actions">
+        <a href="/login" class="login-link">Login</a>
+        <a href="/register" class="signup-link">Sign Up</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <span class="eyebrow">YOUR HEALTH, OUR PRIORITY</span>
+        <h1>Healthcare Made <span>Smarter & Easier</span></h1>
+        <p>
+            Your trusted digital healthcare companion.
+            Explore health information, find doctors and
+            hospitals, and make informed healthcare decisions.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/register" class="primary-btn">Get Started →</a>
+            <a href="#services" class="secondary-btn">Explore Services</a>
+        </div>
+
+        <div class="trust-text">
+            <span>✓ Easy Access</span>
+            <span>✓ Health Information</span>
+            <span>✓ Healthcare Support</span>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="medical-circle">
+            <div class="cross">✚</div>
+            <div class="heart">♥</div>
+            <div class="floating-card card-one">
+                🩺 <span>Doctor Support</span>
+            </div>
+            <div class="floating-card card-two">
+                🏥 <span>Hospital Search</span>
+            </div>
+            <div class="floating-card card-three">
+                💙 <span>Health Information</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services" id="services">
+    <div class="section-heading">
+        <span>WHAT WE OFFER</span>
+        <h2>Our Healthcare Services</h2>
+        <p>Everything you need to explore healthcare in one place.</p>
+    </div>
+
+    <div class="service-grid">
+
+        <a href="/health" class="service-card">
+            <div class="service-icon">💬</div>
+            <h3>Health FAQs</h3>
+            <p>Find answers to common health questions and learn about symptoms.</p>
+            <span>Explore More →</span>
+        </a>
+
+        <a href="/doctors" class="service-card">
+            <div class="service-icon">👨‍⚕️</div>
+            <h3>Find Doctors</h3>
+            <p>Explore doctor profiles and medical specialties.</p>
+            <span>Explore More →</span>
+        </a>
+
+        <a href="/hospitals" class="service-card">
+            <div class="service-icon">🏥</div>
+            <h3>Find Hospitals</h3>
+            <p>Discover hospitals and healthcare facilities.</p>
+            <span>Explore More →</span>
+        </a>
+
+        <a href="/reviews" class="service-card">
+            <div class="service-icon">⭐</div>
+            <h3>Patient Reviews</h3>
+            <p>Read and share experiences about healthcare services.</p>
+            <span>Explore More →</span>
+        </a>
+
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div>
+        <span>ABOUT OUR PLATFORM</span>
+        <h2>Making Healthcare Information Accessible</h2>
+        <p>
+            Smart Healthcare Assistance is designed to bring
+            health education, doctor information and hospital
+            details together through a simple digital platform.
+        </p>
+        <a href="/register" class="primary-btn">Join Us Today →</a>
+    </div>
+    <div class="about-symbol">💙</div>
+</section>
+
+<section class="safety">
+    <h2>Your Health Matters</h2>
+    <p>
+        Our health information is for educational purposes only.
+        It does not replace a doctor's advice. For serious symptoms
+        or emergencies, seek professional medical care immediately.
+    </p>
+</section>
+
+<footer id="contact">
+    <h2>💙 Smart Healthcare Assistance</h2>
+    <p>Your Health, Our Priority</p>
+    <p>© 2026 Smart Healthcare Assistance | Academic Project</p>
+</footer>
+
+<button class="menu-btn" onclick="toggleMenu()">
+    ☰
+</button>
+
+<div id="menuOverlay" class="menu-overlay"
+     onclick="toggleMenu()"></div>
+
+<div id="sideMenu" class="side-menu">
+    <div class="menu-header">
+        <h2>Smart Health</h2>
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+    </div>
+
+    <a href="/">🏠 Home</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/health">💬 Health Chat</a>
+    <a href="/find-care">🔍 Find Care</a>
+    <a href="/doctors">🩺 Doctors</a>
+    <a href="/hospitals">🏥 Hospitals</a>
+    <a href="/reviews">⭐ Reviews</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("sideMenu").classList.toggle("active");
+    document.getElementById("menuOverlay").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>

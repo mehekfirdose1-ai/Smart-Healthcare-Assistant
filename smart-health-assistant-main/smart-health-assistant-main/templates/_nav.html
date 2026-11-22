@@ -1,0 +1,144 @@
+<style>
+.menu-btn {
+    position: fixed !important;
+    top: 18px !important;
+    left: 18px !important;
+    z-index: 10001 !important;
+    background: #0879c9 !important;
+    color: white !important;
+    border: none !important;
+    padding: 10px 16px !important;
+    font-size: 25px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+}
+
+.side-menu {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    width: 270px !important;
+    height: 100vh !important;
+    background: #123456 !important;
+    z-index: 10003 !important;
+    transition: left 0.3s ease !important;
+    padding: 20px 0 !important;
+    box-sizing: border-box !important;
+    overflow-y: auto !important;
+}
+
+.side-menu.active {
+    left: 0 !important;
+}
+
+.menu-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 15px 20px !important;
+    color: white !important;
+}
+
+.menu-header h2 {
+    color: white !important;
+}
+
+.side-menu a {
+    display: block !important;
+    padding: 16px 22px !important;
+    color: white !important;
+    text-decoration: none !important;
+    font-size: 16px !important;
+}
+
+.side-menu a:hover {
+    background: #0879c9 !important;
+}
+
+.close-btn {
+    background: none !important;
+    border: none !important;
+    color: white !important;
+    font-size: 30px !important;
+    cursor: pointer !important;
+}
+
+.menu-overlay {
+    display: none;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0,0,0,0.5) !important;
+    z-index: 10002 !important;
+}
+
+.menu-overlay.active {
+    display: block !important;
+}
+
+.language-box {
+    padding: 20px;
+    color: white;
+}
+
+.language-box label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.language-box select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+}
+</style>
+
+<button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+<div id="menuOverlay" class="menu-overlay"
+     onclick="toggleMenu()"></div>
+
+<div id="sideMenu" class="side-menu">
+
+    <div class="menu-header">
+        <h2>Smart Health</h2>
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+    </div>
+
+    <a href="/" data-i18n="home">🏠 Home</a>
+    <a href="/dashboard" data-i18n="dashboard">📊 Dashboard</a>
+    <a href="/health" data-i18n="healthChat">💬 Health Chat</a>
+    <a href="/find-care" data-i18n="findCare">🔍 Find Care</a>
+    <a href="/doctors" data-i18n="doctors">🩺 Doctors</a>
+    <a href="/hospitals" data-i18n="hospitals">🏥 Hospitals</a>
+    <a href="/reviews" data-i18n="reviews">⭐ Reviews</a>
+    <a href="/logout" data-i18n="logout">🚪 Logout</a>
+
+    <div class="language-box">
+
+        <label for="languageSelect" data-i18n="selectLanguage">
+            🌐 Select Language
+        </label>
+
+        <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="hi">हिन्दी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="ml">മലയാളം</option>
+            <option value="mr">मराठी</option>
+            <option value="bn">বাংলা</option>
+            <option value="pa">ਪੰਜਾਬੀ</option>
+        </select>
+
+    </div>
+</div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("sideMenu").classList.toggle("active");
+    document.getElementById("menuOverlay").classList.toggle("active");
+}
+</script>
+
+<script src="{{ url_for('static', filename='language.js') }}"></script>

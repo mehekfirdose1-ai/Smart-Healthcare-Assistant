@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SmartHealth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+{% include '_nav.html' %}
+
+<div class="dashboard">
+
+    <h1 data-i18n="welcome">Welcome to SmartHealth</h1>
+
+    <h2 data-i18n="appointments">Appointments</h2>
+
+    <h2 data-i18n="patients">Patients</h2>
+
+    <p>
+        <span data-i18n="loggedInAs">Logged in as:</span>
+        {{ email }}
+    </p>
+
+    <div class="dashboard-grid">
+        <a href="/health" data-i18n="healthFAQs">Health FAQs</a>
+
+        <a href="/doctors" data-i18n="findDoctors">Find Doctors</a>
+
+        <a href="/hospitals" data-i18n="findHospitals">Find Hospitals</a>
+
+        <a href="/reviews" data-i18n="patientReviews">Patient Reviews</a>
+    </div>
+
+</div>
+
+</body>
+</html>

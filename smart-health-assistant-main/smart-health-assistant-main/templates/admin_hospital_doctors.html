@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hospital Doctors | SmartHealth Admin</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #075985;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+        }
+
+        h1, h2 {
+            color: #075985;
+        }
+
+        .hospital-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px #00000010;
+        }
+
+        .table-box {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #e0f2fe;
+            color: #075985;
+        }
+
+        .back {
+            background: white;
+            color: #075985;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>💙 SmartHealth Admin</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="back">
+        Back to Dashboard
+    </a>
+</header>
+
+<div class="container">
+
+    <h1>Hospital Doctors</h1>
+
+    <div class="hospital-card">
+        <h2>{{ hospital.hospital_name }}</h2>
+
+        <p><strong>Email:</strong> {{ hospital.email }}</p>
+        <p><strong>Phone:</strong> {{ hospital.phone }}</p>
+        <p><strong>Address:</strong> {{ hospital.address }}</p>
+        <p><strong>City:</strong> {{ hospital.city }}</p>
+        <p><strong>State:</strong> {{ hospital.state }}</p>
+        <p><strong>Status:</strong> {{ hospital.status }}</p>
+    </div>
+
+    <div class="table-box">
+
+        <h2>Registered Doctors</h2>
+
+        {% if doctors %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Doctor Name</th>
+                    <th>Specialization</th>
+                    <th>Qualification</th>
+                    <th>Experience</th>
+                    <th>Consultation Fee</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for doctor in doctors %}
+
+                <tr>
+                    <td>{{ doctor.id }}</td>
+                    <td>{{ doctor.doctor_name }}</td>
+                    <td>{{ doctor.specialization }}</td>
+                    <td>{{ doctor.qualification }}</td>
+                    <td>{{ doctor.experience }} years</td>
+                    <td>₹{{ doctor.consultation_fee }}</td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+            <h3>No Doctors Registered</h3>
+            <p>Doctors added by this hospital will appear here.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 SmartHealth Assistance
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Doctors | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% import '_macros.html' as m %}
+{% set active = 'doctors' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <h1>Find Your Doctor</h1>
+    <p class="care-sub">Explore qualified doctors from approved hospitals. Filter by disease or specialisation.</p>
+
+    <form class="filters" method="GET">
+        <select name="disease" aria-label="Disease">
+            <option value="">Any disease / symptom</option>
+            {% for c in catalog %}<option value="{{ c.name }}" {{ 'selected' if c.name == selected_disease }}>{{ c.name }}</option>{% endfor %}
+        </select>
+        <select name="specialization" aria-label="Specialisation">
+            <option value="">Any specialisation</option>
+            {% for s in specializations %}<option {{ 'selected' if s == selected_spec }}>{{ s }}</option>{% endfor %}
+        </select>
+        <input type="text" name="q" value="{{ q }}" placeholder="Doctor or hospital name">
+        <button class="btn" type="submit">Filter</button>
+    </form>
+
+    {% for d in doctors %}
+    <div class="card">
+        <h2>👨‍⚕️ <a href="{{ url_for('doctor_detail', doctor_id=d.row.id) }}" style="text-decoration:none;color:inherit">{{ d.row.doctor_name }}</a></h2>
+        <p>{{ m.stars(d.rating, d.reviews) }}</p>
+        <p><span class="chip">{{ d.row.specialization }}</span></p>
+        <p><b>Qualification:</b> {{ d.row.qualification }} · <b>Experience:</b> {{ d.row.experience }} years</p>
+        <p><b>Availability:</b> {{ d.row.availability or 'Not specified' }}</p>
+        <p class="fee">Consultation Fee: ₹{{ d.row.consultation_fee }}</p>
+        <p><b>Hospital:</b> <a href="{{ url_for('hospital_detail', hospital_id=d.row.hospital_id) }}">{{ d.row.hospital_name }}</a> · {{ d.row.city }}, {{ d.row.state }}</p>
+        {{ m.recent_reviews(d.recent, 'Patient reviews') }}
+        <p style="margin-top:10px"><a class="btn small" href="{{ url_for('doctor_detail', doctor_id=d.row.id) }}">All reviews &amp; write a review</a></p>
+    </div>
+    {% else %}
+    <div class="empty"><h2>No Doctors Found</h2>
+        <p class="muted">Try another disease or specialisation, or clear the filters.</p></div>
+    {% endfor %}
+
+    <a class="btn" href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+<div class="care-foot">© 2026 SmartHealth Assistance | Healthcare for Everyone</div>
+</body>
+</html>

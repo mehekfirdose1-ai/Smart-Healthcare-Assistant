@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Doctor | SmartHealth</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f6fc;
+            color: #24344d;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0756a5, #087fd0);
+            color: white;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 15px #0002;
+        }
+
+        header h2 {
+            font-size: 25px;
+        }
+
+        header p {
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            background: white;
+            color: #0874bd;
+            padding: 11px 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 850px;
+            width: 92%;
+            margin: 40px auto;
+        }
+
+        .heading {
+            margin-bottom: 25px;
+        }
+
+        .heading h1 {
+            font-size: 30px;
+            color: #153b69;
+        }
+
+        .heading p {
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px #183b6012;
+        }
+
+        .form-title {
+            border-bottom: 1px solid #e7edf5;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-title h2 {
+            color: #155b9b;
+            font-size: 21px;
+        }
+
+        .form-title p {
+            color: #8998a9;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        /* FORM GRID */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #344c68;
+            margin-bottom: 9px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d7e1ed;
+            border-radius: 8px;
+            outline: none;
+            background: #fbfdff;
+            font-size: 14px;
+            color: #344c68;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #0784d1;
+            box-shadow: 0 0 0 3px #0784d120;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        /* BUTTONS */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .submit-btn {
+            flex: 1;
+            min-width: 180px;
+            padding: 14px;
+            background: linear-gradient(135deg, #0878c9, #0756a5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #064b8a;
+            transform: translateY(-2px);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px;
+            background: #edf3f9;
+            color: #345575;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* FLASH MESSAGE */
+        .flash {
+            background: #fff0f0;
+            color: #bd3434;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            color: #8493a5;
+            padding: 30px 15px;
+            font-size: 13px;
+        }
+
+        @media(max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .form-card {
+                padding: 22px;
+            }
+
+            .heading h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h2>🏥 SmartHealth</h2>
+        <p>Hospital Management System</p>
+    </div>
+
+    <a href="{{ url_for('hospital_dashboard') }}"
+       class="back-btn">
+        ← Dashboard
+    </a>
+</header>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>👨‍⚕️ Add New Doctor</h1>
+        <p>Register a doctor and manage your hospital's medical team.</p>
+    </div>
+
+    <div class="form-card">
+
+        <div class="form-title">
+            <h2>Doctor Information</h2>
+            <p>Enter the doctor's professional details below.</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST"
+              action="{{ url_for('add_doctor') }}">
+
+            <div class="form-grid">
+
+                <div class="form-group full-width">
+                    <label>Doctor Name *</label>
+                    <input type="text"
+                           name="doctor_name"
+                           placeholder="Enter doctor's full name"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Specialisation *</label>
+                    <select name="specialization" required>
+                        <option value="">Select Specialisation</option>
+                        <option>Cardiologist</option>
+                        <option>Neurologist</option>
+                        <option>Dermatologist</option>
+                        <option>Pediatrician</option>
+                        <option>Orthopedic</option>
+                        <option>Gynecologist</option>
+                        <option>General Physician</option>
+                        <option>ENT Specialist</option>
+                        <option>Ophthalmologist</option>
+                        <option>Psychiatrist</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Qualification *</label>
+                    <input type="text"
+                           name="qualification"
+                           placeholder="Example: MBBS, MD"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Experience (Years)</label>
+                    <input type="number"
+                           name="experience"
+                           min="0"
+                           value="0"
+                           placeholder="Enter experience">
+                </div>
+
+                <div class="form-group">
+                    <label>Availability</label>
+                    <select name="availability">
+                        <option value="">Select Availability</option>
+                        <option>Monday - Friday</option>
+                        <option>Monday - Saturday</option>
+                        <option>Monday - Sunday</option>
+                        <option>Morning</option>
+                        <option>Evening</option>
+                        <option>Full Time</option>
+                        <option>Part Time</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Consultation Fee (₹)</label>
+                    <input type="number"
+                           name="consultation_fee"
+                           min="0"
+                           step="0.01"
+                           placeholder="Enter consultation fee">
+                </div>
+
+            </div>
+
+            <div class="buttons">
+
+                <button type="submit" class="submit-btn">
+                    + Register Doctor
+                </button>
+
+                <a href="{{ url_for('view_doctors') }}"
+                   class="cancel-btn">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 SmartHealth Assistance | Healthcare for Everyone
+</footer>
+
+</body>
+</html>

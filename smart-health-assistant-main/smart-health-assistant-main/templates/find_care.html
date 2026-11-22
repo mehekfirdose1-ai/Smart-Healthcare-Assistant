@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Care | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% set active = 'care' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <h1>Find Hospitals &amp; Doctors by Condition</h1>
+    <p class="care-sub">Choose a disease or symptom to see suitable hospitals, doctors and patient reviews near you.</p>
+
+    <div class="filters">
+        <select id="condition" aria-label="Disease or symptom">
+            <option value="">Select a disease or symptom</option>
+            {% for c in catalog %}
+            <option value="{{ c.name }}" data-specs="{{ c.specializations|join(',') }}"
+                {% if selected and selected.name == c.name %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px">
+            <input type="checkbox" id="urgent" style="flex:none" {% if urgent %}checked{% endif %}> This feels urgent
+        </label>
+    </div>
+
+    <div id="care-root"></div>
+
+    <p class="care-foot" style="padding-top:0">⚠️ This is general guidance, not a diagnosis. In an emergency call 112.</p>
+</div>
+
+<script src="{{ url_for('static', filename='care.js') }}"></script>
+<script>
+    var sel = document.getElementById("condition");
+    var urgentBox = document.getElementById("urgent");
+    var root = document.getElementById("care-root");
+
+    function refresh() {
+        var opt = sel.options[sel.selectedIndex];
+        if (!sel.value) {
+            root.innerHTML = '<div class="empty"><h3>Pick a condition above</h3><p class="muted">We will match it to the right kind of doctor.</p></div>';
+            return;
+        }
+        CareFinder.mount(root, {
+            urgency: urgentBox.checked ? "urgent" : "low",
+            specializations: opt.dataset.specs.split(","),
+            condition: sel.value
+        });
+    }
+    sel.addEventListener("change", refresh);
+    urgentBox.addEventListener("change", refresh);
+    refresh();
+</script>
+</body>
+</html>

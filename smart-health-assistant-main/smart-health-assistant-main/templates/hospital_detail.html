@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ hospital.hospital_name }} | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% import '_macros.html' as m %}
+{% set active = 'hospitals' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <div class="card">
+        <h2>🏥 {{ hospital.hospital_name }}</h2>
+        <p>{{ m.stars(rating, review_count) }}</p>
+        <p><b>Address:</b> {{ hospital.address }}, {{ hospital.city }}, {{ hospital.state }}</p>
+        <p><b>Phone:</b> {{ hospital.phone }}</p>
+        <p><span class="chip green">✓ Approved hospital</span></p>
+    </div>
+
+    <div class="card">
+        <h3>Doctors</h3>
+        {% for d in doctors %}
+        <div class="doc-row">
+            <div>
+                <h4>👨‍⚕️ {{ d.row.doctor_name }}</h4>
+                <span class="chip">{{ d.row.specialization }}</span>
+                <div class="muted">{{ d.row.qualification }} · {{ d.row.experience }} yrs · {{ d.row.availability or 'Availability not specified' }}</div>
+                <div class="fee">Consultation fee: ₹{{ d.row.consultation_fee }}</div>
+            </div>
+            <div>
+                <div>{{ m.stars(d.rating, d.reviews) }}</div>
+                <p><a class="btn ghost small" href="{{ url_for('doctor_detail', doctor_id=d.row.id) }}">Doctor reviews</a></p>
+            </div>
+        </div>
+        {% else %}
+        <p class="muted">This hospital has not listed any doctors yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <h3>Hospital reviews</h3>
+        {{ m.review_list(reviews) }}
+        <hr style="border:0;border-top:1px solid #e2e8f0;margin:16px 0">
+        {{ m.review_form('hospital', hospital.id, my_review, url_for('hospital_detail', hospital_id=hospital.id), 'Rate this hospital') }}
+    </div>
+
+    <a class="btn" href="{{ url_for('hospitals') }}">← All hospitals</a>
+</div>
+<div class="care-foot">© 2026 SmartHealth Assistance | Healthcare for Everyone</div>
+</body>
+</html>

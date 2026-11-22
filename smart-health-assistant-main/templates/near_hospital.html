@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Hospitals | SmartHealth</title>
+
+    <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f7fb;
+            color: #263746;
+        }
+
+        header {
+            background: #087e8b;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header h2 {
+            font-size: 25px;
+        }
+
+        .container {
+            padding: 30px 7%;
+        }
+
+        .top {
+            margin-bottom: 25px;
+        }
+
+        .top h1 {
+            color: #087e8b;
+            margin-bottom: 10px;
+        }
+
+        .location-btn {
+            background: #087e8b;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 25px;
+        }
+
+        .hospital-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .hospital {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        .hospital h3 {
+            color: #087e8b;
+            margin-bottom: 10px;
+        }
+
+        .hospital p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .hospital a {
+            display: inline-block;
+            background: #087e8b;
+            color: white;
+            padding: 9px 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        #map {
+            height: 480px;
+            border-radius: 12px;
+            z-index: 1;
+        }
+
+        @media(max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>SmartHealth</h2>
+</header>
+
+<div class="container">
+
+    <div class="top">
+        <h1>Find Nearby Hospitals</h1>
+        <p>Find hospitals around your current location.</p>
+
+        <button class="location-btn" onclick="getLocation()">
+            Detect My Location
+        </button>
+
+        <p id="status" style="margin-top:15px;">
+            Click the button to find your location.
+        </p>
+    </div>
+
+    <div class="content">
+
+        <div>
+            <h2 style="margin-bottom:15px;">Nearby Hospitals</h2>
+
+            <div class="hospital-list" id="hospitalList">
+                <div class="hospital">
+                    <h3>Waiting for Location...</h3>
+                    <p>Detect your location to find nearby hospitals.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+
+    </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+let map = L.map('map').setView([13.0033, 76.1004], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+function getLocation() {
+
+    if (!navigator.geolocation) {
+        document.getElementById("status").innerText =
+            "Location is not supported by your browser.";
+        return;
+    }
+
+    document.getElementById("status").innerText =
+        "Detecting your location...";
+
+    navigator.geolocation.getCurrentPosition(
+        async function(position) {
+
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+
+            map.setView([lat, lon], 13);
+
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup("Your Current Location").openPopup();
+
+            document.getElementById("status").innerText =
+                "Your location detected successfully!";
+
+            findHospitals(lat, lon);
+        },
+
+        function() {
+            document.getElementById("status").innerText =
+                "Unable to access location. Please allow location permission.";
+        }
+    );
+}
+
+async function findHospitals(lat, lon) {
+
+    let query = `
+    [out:json][timeout:25];
+    (
+      node["amenity"="hospital"](around:10000,${lat},${lon});
+      way["amenity"="hospital"](around:10000,${lat},${lon});
+      relation["amenity"="hospital"](around:10000,${lat},${lon});
+    );
+    out center tags;
+    `;
+
+    try {
+
+        let response = await fetch(
+            "https://overpass-api.de/api/interpreter",
+            {
+                method: "POST",
+                body: query
+            }
+        );
+
+        let data = await response.json();
+
+        let hospitals = data.elements;
+
+        let list = document.getElementById("hospitalList");
+        list.innerHTML = "";
+
+        if (hospitals.length === 0) {
+            list.innerHTML = "<p>No hospitals found nearby.</p>";
+            return;
+        }
+
+        hospitals.forEach(hospital => {
+
+            let hLat = hospital.lat || hospital.center?.lat;
+            let hLon = hospital.lon || hospital.center?.lon;
+
+            if (!hLat || !hLon) return;
+
+            let name = hospital.tags.name || "Hospital";
+
+            let distance = getDistance(lat, lon, hLat, hLon);
+
+            L.marker([hLat, hLon]).addTo(map)
+                .bindPopup(name);
+
+            list.innerHTML += `
+                <div class="hospital">
+                    <h3>${name}</h3>
+                    <p>Distance: ${distance.toFixed(2)} km</p>
+                    <p>${hospital.tags["addr:full"] ||
+                        hospital.tags["addr:street"] ||
+                        "Address not available"}</p>
+                    <a target="_blank"
+                    href="https://www.google.com/maps/dir/?api=1&destination=${hLat},${hLon}">
+                    Get Directions</a>
+                </div>
+            `;
+        });
+
+        if (list.innerHTML === "") {
+            list.innerHTML = "<p>No hospital locations available.</p>";
+        }
+
+    } catch(error) {
+        document.getElementById("status").innerText =
+            "Unable to load hospitals. Please try again.";
+    }
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+
+    let R = 6371;
+
+    let dLat = (lat2-lat1) * Math.PI/180;
+    let dLon = (lon2-lon1) * Math.PI/180;
+
+    let a = Math.sin(dLat/2)**2 +
+        Math.cos(lat1*Math.PI/180) *
+        Math.cos(lat2*Math.PI/180) *
+        Math.sin(dLon/2)**2;
+
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartHealth Chatbot</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px #00000010;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            color: #1769aa;
+            text-decoration: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #1769aa;
+        }
+
+        .chat-container {
+            max-width: 850px;
+            margin: 35px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px #00000012;
+        }
+
+        .chat-header {
+            background: #1769aa;
+            color: white;
+            padding: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h2 {
+            font-size: 21px;
+        }
+
+        .chat-header p {
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .online {
+            font-size: 12px;
+            color: #d7ffe3;
+        }
+
+        .chat-box {
+            height: 600px;
+            overflow-y: auto;
+            padding: 22px;
+            background: #f8fafc;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 18px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 75%;
+            padding: 13px 17px;
+            border-radius: 15px;
+            line-height: 1.6;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .bot .bubble {
+            background: #e2efff;
+            color: #222;
+            border-bottom-left-radius: 3px;
+        }
+
+        .user .bubble {
+            background: #1769aa;
+            color: white;
+            border-bottom-right-radius: 3px;
+        }
+
+        .suggestions {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        .suggestions p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .suggestions button {
+            background: #edf5ff;
+            border: 1px solid #c9ddf5;
+            color: #1769aa;
+            border-radius: 20px;
+            padding: 9px 14px;
+            margin: 4px;
+            cursor: pointer;
+        }
+
+        .suggestions button:hover {
+            background: #1769aa;
+            color: white;
+        }
+
+        .chat-input-area {
+            display: flex;
+            padding: 18px;
+            gap: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #1769aa;
+        }
+
+        .send-btn {
+            background: #1769aa;
+            color: white;
+            border: none;
+            padding: 12px 23px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .send-btn:hover {
+            background: #104c80;
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .voice-btn {
+            background: #edf5ff;
+            color: #1769aa;
+            border: 1px solid #c9ddf5;
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .voice-btn:hover {
+            background: #d5e9ff;
+        }
+
+        .clear-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .notice {
+            text-align: center;
+            padding: 15px;
+            color: #777;
+            font-size: 12px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        #voiceStatus {
+            text-align: center;
+            color: #1769aa;
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        @media(max-width: 600px) {
+            .topbar {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            nav a {
+                margin-left: 8px;
+                font-size: 13px;
+            }
+
+            .chat-container {
+                margin: 15px 10px;
+            }
+
+            .chat-box {
+                height: 400px;
+            }
+
+            .bubble {
+                max-width: 90%;
+            }
+
+            .chat-input-area {
+                padding: 10px;
+                gap: 6px;
+            }
+
+            .send-btn {
+                padding: 10px 14px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    {% include '_nav.html' %}
+
+    <header class="topbar">
+
+        <a href="/" class="brand">💙 SmartHealth</a>
+
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/find-care">Find Care</a>
+            <a href="/logout">Logout</a>
+        </nav>
+
+    </header>
+
+    <div class="chat-container">
+
+        <!-- Chat Header -->
+
+        <div class="chat-header">
+
+            <div>
+                <h2>💙 SmartHealth Assistant</h2>
+                <p>Your Personal Health Information Chatbot</p>
+                <span class="online">● Ready to help</span>
+            </div>
+
+            <button class="clear-btn" onclick="clearChat()">
+                Clear Chat
+            </button>
+
+        </div>
+
+        <!-- Chat Messages -->
+
+        <div class="chat-box" id="chatBox">
+
+            <div class="message bot">
+
+                <div class="bubble">
+                    Hello! 👋 Welcome to SmartHealth Assistant.
+
+                    I am here to help you understand common health conditions, symptoms and general health information.
+
+                    How can I help you today? 😊
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Suggested Questions -->
+
+        <div class="suggestions">
+
+            <p>💡 Try asking:</p>
+
+            <button onclick="askQuestion('What are the symptoms of fever?')">
+                🤒 Fever
+            </button>
+
+            <button onclick="askQuestion('What causes headache?')">
+                🤕 Headache
+            </button>
+
+            <button onclick="askQuestion('What are the symptoms of common cold?')">
+                🤧 Common Cold
+            </button>
+
+            <button onclick="askQuestion('How can I maintain a healthy diet?')">
+                🥗 Healthy Diet
+            </button>
+
+            <button onclick="askQuestion('How can I improve my sleep?')">
+                😴 Sleep
+            </button>
+
+        </div>
+
+        <!-- Chat Input -->
+
+        <form class="chat-input-area" id="chatForm">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask me anything about health..."
+                autocomplete="off"
+                required
+            >
+
+            <!-- Voice Button -->
+
+            <button
+                type="button"
+                class="voice-btn"
+                id="voiceBtn"
+                onclick="startVoiceInput()"
+                title="Speak your question">
+
+                🎤
+
+            </button>
+
+            <!-- Send Button -->
+
+            <button
+                type="submit"
+                class="send-btn"
+                id="sendBtn">
+
+                Send ➤
+
+            </button>
+
+        </form>
+
+        <p id="voiceStatus"></p>
+
+        <!-- Medical Notice -->
+
+        <div class="notice">
+
+            ⚠️ This chatbot provides general educational information,
+            not medical diagnosis or treatment.
+            Seek professional medical advice when needed.
+
+        </div>
+
+    </div>
+
+    <!-- Doctor and Hospital Recommendations -->
+
+    <div class="care-below" id="careResults"></div>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <h3>💙 Smart Healthcare Assistance</h3>
+        <p>Your Health, Our Priority</p>
+
+    </footer>
+
+    <!-- JavaScript Files -->
+
+    <script src="{{ url_for('static', filename='care.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartHealth | Hospital Dashboard</title><style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f1f6fc;
+    color: #183b60;
+}
+
+.navbar {
+    background: white;
+    padding: 20px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 15px #dce7f2;
+}
+
+.logo {
+    color: #0879c9;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logout {
+    background: #eaf4ff;
+    color: #0879c9;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 45px auto;
+    padding: 20px;
+}
+
+.welcome {
+    background: linear-gradient(120deg, #0879c9, #164fb5);
+    color: white;
+    padding: 40px;
+    border-radius: 18px;
+    margin-bottom: 30px;
+}
+
+.welcome h1 {
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    opacity: 0.9;
+}
+
+.section-title {
+    margin-bottom: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    padding: 28px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px #dce7f2;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #718096;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.card a {
+    display: inline-block;
+    background: #0879c9;
+    color: white;
+    padding: 11px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.footer {
+    text-align: center;
+    padding: 25px;
+    color: #8494a7;
+}
+</style></head><body><div class="navbar">
+    <div class="logo">✚ SmartHealth</div>
+    <a class="logout" href="{{ url_for('hospital_logout') }}">Logout</a>
+</div><div class="container"><div class="welcome">
+    <h1>Welcome, {{ hospital_name }}!</h1>
+    <p>Manage your hospital and doctor information from one place.</p>
+</div>
+
+<h2 class="section-title">Hospital Management</h2>
+
+<div class="cards">
+
+    <div class="card">
+        <div class="card-icon">👨‍⚕️</div>
+        <h3>Add Doctor</h3>
+        <p>Register doctors and enter their qualifications and specialization.</p>
+        <a href="{{ url_for('add_doctor') }}">Add Doctor →</a>
+    </div>
+
+    <div class="card">
+        <div class="card-icon">🏥</div>
+        <h3>View Doctors</h3>
+        <p>View the doctors registered under your hospital.</p>
+        <a href="{{ url_for('view_doctors') }}">View Doctors →</a>
+    </div>
+
+</div>
+
+</div><div class="footer">
+    © 2026 SmartHealth | Hospital Portal
+</div></body>
+</html>

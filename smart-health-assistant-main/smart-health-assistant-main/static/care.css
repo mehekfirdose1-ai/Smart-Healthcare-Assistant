@@ -1,0 +1,129 @@
+/* Shared styles for the patient "find care" pages and the chatbot panel */
+:root {
+    --blue: #1769aa;
+    --blue-dark: #104c80;
+    --blue-soft: #e2efff;
+    --ink: #24364b;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --bg: #eef5fa;
+    --green: #07835c;
+    --red: #c62828;
+    --star: #f5a623;
+}
+
+.care-page { margin: 0; font-family: Arial, sans-serif; background: var(--bg); color: var(--ink); }
+.care-page * { box-sizing: border-box; }
+
+.care-nav {
+    background: #fff; padding: 16px 7%; display: flex; flex-wrap: wrap;
+    justify-content: space-between; align-items: center; gap: 10px;
+    box-shadow: 0 2px 10px #00000010;
+}
+.care-nav .brand { font-size: 22px; font-weight: bold; color: var(--blue); text-decoration: none; }
+.care-nav nav { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.care-nav nav a { color: #333; text-decoration: none; font-weight: bold; font-size: 14px; }
+.care-nav nav a:hover, .care-nav nav a.active { color: var(--blue); }
+
+.care-wrap { max-width: 1000px; margin: 30px auto; padding: 0 18px; }
+.care-wrap h1 { text-align: center; color: #075985; margin-bottom: 6px; }
+.care-sub { text-align: center; color: var(--muted); margin: 0 0 26px; }
+
+.flash { background: #e8f4ff; border: 1px solid #b6d8f5; color: var(--blue-dark);
+         padding: 12px 16px; border-radius: 10px; margin-bottom: 18px; }
+
+.card {
+    background: #fff; border-radius: 14px; padding: 22px; margin-bottom: 18px;
+    box-shadow: 0 4px 15px #00000012; border-left: 5px solid #0891b2;
+}
+.card h2, .card h3 { margin: 0 0 6px; color: #087dbb; }
+.card p { margin: 4px 0; line-height: 1.6; }
+.muted { color: var(--muted); font-size: 14px; }
+.fee { color: #087b65; font-weight: bold; }
+
+.stars { color: var(--star); letter-spacing: 1px; white-space: nowrap; }
+.stars .off { color: #cbd5e1; }
+.rating-text { color: var(--muted); font-size: 13px; margin-left: 6px; }
+
+.chip { display: inline-block; background: var(--blue-soft); color: var(--blue);
+        border-radius: 20px; padding: 3px 11px; font-size: 12px; font-weight: bold; margin-right: 6px; }
+.chip.green { background: #e3f7ee; color: var(--green); }
+.chip.red { background: #fde8e8; color: var(--red); }
+
+.btn { display: inline-block; background: var(--blue); color: #fff; border: 0; cursor: pointer;
+       padding: 10px 18px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: bold; }
+.btn:hover { background: var(--blue-dark); }
+.btn.ghost { background: #edf5ff; color: var(--blue); border: 1px solid #c9ddf5; }
+.btn.ghost:hover { background: var(--blue); color: #fff; }
+.btn.small { padding: 6px 12px; font-size: 13px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 10px; background: #fff; padding: 16px;
+           border-radius: 14px; box-shadow: 0 4px 15px #00000012; margin-bottom: 22px; }
+.filters input, .filters select {
+    flex: 1 1 180px; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
+
+.empty { text-align: center; background: #fff; padding: 40px; border-radius: 12px; }
+
+.doc-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px;
+           padding: 14px 0; border-top: 1px solid var(--line); }
+.doc-row:first-of-type { border-top: 0; }
+.doc-row h4 { margin: 0 0 3px; color: var(--ink); }
+
+/* reviews */
+.review { border-top: 1px solid var(--line); padding: 12px 0; }
+.review:first-child { border-top: 0; }
+.review .who { font-size: 13px; color: var(--muted); }
+.review-form label { font-weight: bold; display: block; margin: 10px 0 6px; }
+.review-form textarea { width: 100%; min-height: 80px; padding: 10px; border: 1px solid #cbd5e1;
+                        border-radius: 8px; font-family: inherit; font-size: 14px; }
+.star-input { display: inline-flex; flex-direction: row-reverse; gap: 2px; }
+.star-input input { display: none; }
+.star-input label { font-size: 28px; color: #cbd5e1; cursor: pointer; margin: 0; }
+.star-input input:checked ~ label, .star-input label:hover, .star-input label:hover ~ label { color: var(--star); }
+
+.tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 22px; }
+.tabs a { padding: 9px 20px; border-radius: 20px; background: #fff; color: var(--blue);
+          text-decoration: none; font-weight: bold; border: 1px solid #c9ddf5; }
+.tabs a.on { background: var(--blue); color: #fff; }
+
+.care-foot { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+
+/* ---- Smart recommendation panel (used on /find-care and inside the chatbot) ---- */
+.care-panel { background: #fff; border: 1px solid #c9ddf5; border-radius: 14px; padding: 18px; margin: 4px 0 18px; }
+.care-step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+.care-step .num { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--blue);
+                  color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.care-step h4 { margin: 2px 0 4px; font-size: 16px; color: var(--ink); }
+.care-step p { margin: 0; font-size: 13px; color: var(--muted); }
+
+.care-alert { border-radius: 10px; padding: 12px 14px; font-size: 14px; line-height: 1.5; margin-bottom: 14px; }
+.care-alert.urgent { background: #fde8e8; color: #8e1b1b; border: 1px solid #f5b5b5; }
+.care-alert.low { background: #e3f7ee; color: #0a5d42; border: 1px solid #b4e3cd; }
+
+.care-loc { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 4px; }
+.care-loc input { flex: 1 1 200px; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; }
+.care-loc-msg { font-size: 12px; color: var(--muted); min-height: 16px; margin-bottom: 8px; }
+
+.rec-card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-top: 12px; background: #fafcff; }
+.rec-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.rec-head h4 { margin: 0; font-size: 17px; color: #087dbb; }
+.rec-meta { font-size: 13px; color: var(--muted); margin: 4px 0 8px; line-height: 1.5; }
+.rec-doc { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+           border-top: 1px dashed var(--line); padding: 9px 0; font-size: 14px; }
+.rec-doc b { color: var(--ink); }
+.rec-note { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+
+.care-panel-chat .btn { font-size: 13px; }
+
+.rec-reviews { margin-top: 10px; padding: 10px 12px; background: #fff; border: 1px solid var(--line); border-radius: 10px; }
+.rec-reviews-title { font-size: 12px; font-weight: bold; color: var(--blue); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.rec-review { padding: 6px 0; border-top: 1px dashed var(--line); font-size: 13px; }
+.rec-reviews-title + .rec-review { border-top: 0; }
+.rec-review-text { margin-top: 3px; color: var(--ink); line-height: 1.5; overflow-wrap: anywhere; }
+.rec-doc-block { border-top: 1px dashed var(--line); }
+.rec-doc-block .rec-doc { border-top: 0; }
+
+.rec-section { margin: 20px 0 4px; font-size: 17px; color: var(--ink); }
+.rec-card.doc-first { border-left: 4px solid #0891b2; background: #fff; }
+.care-below { max-width: 850px; margin: 0 auto 30px; padding: 0 10px; }
+.care-below .care-panel { box-shadow: 0 5px 25px #00000012; }

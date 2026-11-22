@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Reviews | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% import '_macros.html' as m %}
+{% set active = 'reviews' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <h1>Patient Reviews</h1>
+    <p class="care-sub">Real experiences shared by patients.</p>
+
+    <div class="tabs">
+        <a href="{{ url_for('reviews', type='hospital') }}" class="{{ 'on' if kind == 'hospital' }}">🏥 Hospital reviews</a>
+        <a href="{{ url_for('reviews', type='doctor') }}" class="{{ 'on' if kind == 'doctor' }}">👨‍⚕️ Doctor reviews</a>
+    </div>
+
+    {% for r in reviews %}
+    <div class="card">
+        {% if kind == 'hospital' %}
+        <h3><a href="{{ url_for('hospital_detail', hospital_id=r.link_id) }}">{{ r.target_name }}</a></h3>
+        {% else %}
+        <h3><a href="{{ url_for('doctor_detail', doctor_id=r.link_id) }}">{{ r.target_name }}</a></h3>
+        <div class="muted">{{ r.sub_name }} · {{ r.hospital_name }}</div>
+        {% endif %}
+        <div class="review">
+            <span class="stars">{% for i in range(1, 6) %}<span class="{{ '' if i <= r.rating else 'off' }}">★</span>{% endfor %}</span>
+            <span class="who">{{ r.email|mask_email }} · {{ r.created_at|review_date }}</span>
+            {% if r.comment %}<p>{{ r.comment }}</p>{% endif %}
+        </div>
+    </div>
+    {% else %}
+    <div class="empty"><h3>No {{ kind }} reviews yet</h3>
+        <p class="muted">Open a {{ kind }} page and share your experience.</p></div>
+    {% endfor %}
+</div>
+<div class="care-foot">© 2026 SmartHealth Assistance | Healthcare for Everyone</div>
+</body>
+</html>

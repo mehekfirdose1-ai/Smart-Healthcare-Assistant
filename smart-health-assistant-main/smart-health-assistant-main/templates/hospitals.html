@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Hospitals | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% import '_macros.html' as m %}
+{% set active = 'hospitals' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <h1>Find Hospitals</h1>
+    <p class="care-sub">Explore verified and approved hospitals.</p>
+
+    <form class="filters" method="GET">
+        <input type="text" name="q" value="{{ q }}" placeholder="Search by hospital name, city or area">
+        <button class="btn" type="submit">Search</button>
+        <a class="btn ghost" href="{{ url_for('find_care') }}">Find by disease</a>
+    </form>
+
+    {% for h in hospitals %}
+    <div class="card">
+        <h2>🏥 <a href="{{ url_for('hospital_detail', hospital_id=h.row.id) }}" style="text-decoration:none;color:inherit">{{ h.row.hospital_name }}</a></h2>
+        <p>{{ m.stars(h.rating, h.reviews) }}</p>
+        <p><b>Address:</b> {{ h.row.address }}, {{ h.row.city }}, {{ h.row.state }}</p>
+        <p><b>Phone:</b> {{ h.row.phone }} · <b>Doctors listed:</b> {{ h.doctor_count }}</p>
+        <p><span class="chip green">✓ Approved Hospital</span></p>
+        {{ m.recent_reviews(h.recent, 'Patient reviews') }}
+        <p style="margin-top:10px"><a class="btn small" href="{{ url_for('hospital_detail', hospital_id=h.row.id) }}">Doctors, all reviews &amp; write a review</a></p>
+    </div>
+    {% else %}
+    <div class="empty"><h2>No Hospitals Found</h2>
+        <p class="muted">No approved hospitals match your search.</p></div>
+    {% endfor %}
+
+    <a class="btn" href="{{ url_for('home') }}">← Back to Home</a>
+</div>
+<div class="care-foot">© 2026 SmartHealth Assistance | Healthcare for Everyone</div>
+</body>
+</html>

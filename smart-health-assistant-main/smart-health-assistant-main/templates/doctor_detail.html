@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ doctor.doctor_name }} | SmartHealth</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='care.css') }}">
+</head>
+<body class="care-page">
+{% import '_macros.html' as m %}
+{% set active = 'doctors' %}{% include '_nav.html' %}
+
+<div class="care-wrap">
+    <div class="card">
+        <h2>👨‍⚕️ {{ doctor.doctor_name }}</h2>
+        <p>{{ m.stars(rating, review_count) }}</p>
+        <p><span class="chip">{{ doctor.specialization }}</span></p>
+        <p><b>Qualification:</b> {{ doctor.qualification }}</p>
+        <p><b>Experience:</b> {{ doctor.experience }} years</p>
+        <p><b>Availability:</b> {{ doctor.availability or 'Not specified' }}</p>
+        <p class="fee">Consultation fee: ₹{{ doctor.consultation_fee }}</p>
+        <p><b>Hospital:</b> <a href="{{ url_for('hospital_detail', hospital_id=doctor.hospital_id) }}">{{ doctor.hospital_name }}</a>, {{ doctor.city }}, {{ doctor.state }} · 📞 {{ doctor.phone }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Patient reviews</h3>
+        {{ m.review_list(reviews) }}
+        <hr style="border:0;border-top:1px solid #e2e8f0;margin:16px 0">
+        {{ m.review_form('doctor', doctor.id, my_review, url_for('doctor_detail', doctor_id=doctor.id), 'Rate this doctor') }}
+    </div>
+
+    <a class="btn" href="{{ url_for('doctors') }}">← All doctors</a>
+</div>
+<div class="care-foot">© 2026 SmartHealth Assistance | Healthcare for Everyone</div>
+</body>
+</html>

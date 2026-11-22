@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - SmartHealth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="logo">💙 SmartHealth</div>
+    <a href="/logout" class="logout-btn">Logout</a>
+</nav>
+
+<div class="dashboard">
+    <h1>Welcome to Smart Healthcare Assistance!</h1>
+    <p>Logged in as: {{ email }}</p>
+
+    <div class="dashboard-grid">
+        <a href="/health">Health FAQs</a>
+        <a href="/doctors">Find Doctors</a>
+        <a href="/hospitals">Find Hospitals</a>
+        <a href="/reviews">Patient Reviews</a>
+    </div>
+</div>
+</body>
+</html>
